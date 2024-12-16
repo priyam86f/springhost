@@ -11,13 +11,8 @@ import org.springframework.web.bind.annotation.*;
 public class WebhookController {
 
     // This will be invoked by Hasura for the custom action
-    @PostMapping("/webhook/createUserWithUppercase")
-   public String postMethodName(@RequestBody String entity) {
-       //TODO: process POST request
-       
-       return entity;
-   }
    
+    @PostMapping("/createUserWithUppercase")
     public ResponseEntity<?> handleCreateUser(@RequestBody CreateUserRequest request) {
         // Convert firstName and lastName to uppercase
         String firstNameUpper = request.getFirstName().toUpperCase();
