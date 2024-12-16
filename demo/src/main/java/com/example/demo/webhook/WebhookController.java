@@ -7,24 +7,25 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/webhook")
 public class WebhookController {
 
-    @PostMapping("/customAction")
-    public ResponseEntity<?> handleCustomAction(@RequestBody CustomActionRequest request) {
-        // Example logic for processing incoming request
-        System.out.println("Received request: " + request);
+    // This will be invoked by Hasura for the custom action
+    @PostMapping("/createUserWithUppercase")
+    public ResponseEntity<?> handleCreateUser(@RequestBody CreateUserRequest request) {
+        // Convert firstName and lastName to uppercase
+        String firstNameUpper = request.getFirstName().toUpperCase();
+        String lastNameUpper = request.getLastName().toUpperCase();
 
-        // Example: return a response back to Hasura
-        return ResponseEntity.ok(new CustomActionResponse("Action Completed"));
-    }
+        // Log for debugging
+        System.out.println("Transformed Names: " + firstNameUpper + " " + lastNameUpper);
 
-    @GetMapping("/home")
-    public String getMethodName() {
-        return new String("hello");
+        // Proceed to create the user in the database (NeonDB logic can be added here)
+
+        // Return the transformed data to Hasura
+        return ResponseEntity.ok(new CreateUserResponse(firstNameUpper, lastNameUpper, request.getAge()));
     }
-    
 }
 
 // Request class to match Hasura action's input
-class CustomActionRequest {
+class CreateUserRequest {
     private String firstName;
     private String lastName;
     private int age;
@@ -53,41 +54,43 @@ class CustomActionRequest {
     public void setAge(int age) {
         this.age = age;
     }
-
-    // Optional: Override toString() for debugging
-    @Override
-    public String toString() {
-        return "CustomActionRequest{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                '}';
-    }
 }
 
 // Response class to send back to Hasura
-class CustomActionResponse {
-    private String message;
+class CreateUserResponse {
+    private String firstName;
+    private String lastName;
+    private int age;
 
     // Constructor
-    public CustomActionResponse(String message) {
-        this.message = message;
+    public CreateUserResponse(String firstName, String lastName, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
     }
 
-    // Getter and Setter
-    public String getMessage() {
-        return message;
+    // Getters and Setters
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    // Optional: Override toString() for debugging
-    @Override
-    public String toString() {
-        return "CustomActionResponse{" +
-                "message='" + message + '\'' +
-                '}';
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
