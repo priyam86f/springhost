@@ -3,6 +3,9 @@ package com.example.demo.webhook;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -26,6 +29,12 @@ public class WebhookController {
         // Return the transformed data to Hasura
         return ResponseEntity.ok(new CreateUserResponse(firstNameUpper, lastNameUpper, request.getAge()));
     }
+
+    @GetMapping("/home")
+    public String getMethodName() {
+        return "new String();";
+    }
+    
 }
 
 // Request class to match Hasura action's input
