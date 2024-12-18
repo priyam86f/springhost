@@ -2,29 +2,25 @@ package com.example.demo.webhook;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
-
 
 @RestController
 @RequestMapping("/webhook")
 public class WebhookController {
 
     // This will be invoked by Hasura for the custom action
-   
     @PostMapping("/createUserWithUppercase")
     public ResponseEntity<?> handleCreateUser(@RequestBody CreateUserRequest request) {
+        // Validate input
+        if (request.getFirstName() == null || request.getLastName() == null) {
+            return ResponseEntity.badRequest().body("First name and Last name cannot be null");
+        }
+
         // Convert firstName and lastName to uppercase
         String firstNameUpper = request.getFirstName().toUpperCase();
         String lastNameUpper = request.getLastName().toUpperCase();
 
         // Log for debugging
         System.out.println("Transformed Names: " + firstNameUpper + " " + lastNameUpper);
-
-        // Proceed to create the user in the database (NeonDB logic can be added here)
 
         // Return the transformed data to Hasura
         return ResponseEntity.ok(new CreateUserResponse(firstNameUpper, lastNameUpper, request.getAge()));
@@ -34,7 +30,6 @@ public class WebhookController {
     public String getMethodName() {
         return "new String();";
     }
-    
 }
 
 // Request class to match Hasura action's input
