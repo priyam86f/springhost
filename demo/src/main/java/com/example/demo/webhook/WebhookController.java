@@ -22,6 +22,10 @@ public class WebhookController {
 
         // Log for debugging
         System.out.println("Transformed Names: " + firstNameUpper + " " + lastNameUpper);
+        // Log the user details after saving
+System.out.println("User saved: " + user);
+        
+
 
         // Create a new User entity and set its properties
         User user = new User();
